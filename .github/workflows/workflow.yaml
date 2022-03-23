@@ -14,9 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Get package version
+      - name: Get style library version
         id: getVersion
-        run: echo "::set-output name=version::$(jq '.version' ./projects/stories/package.json)"
+        run: |
+          echo "::set-output name=library::$(jq '.version' ./projects/stories/package.json)"
+          echo "::set-output name=project::$(jq '.version' ./package.json)"
 
-      - name: Show package version (for App Engine)
-        run: 'echo ${{ steps.getVersion.outputs.version }}'
+      - name: Show style library version (for App Engine)
+        run: |
+          echo Library version: ${{ steps.getVersion.outputs.library }}
+          echo Project version: ${{ steps.getVersion.outputs.project }}
