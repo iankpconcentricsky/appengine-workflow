@@ -1,0 +1,22 @@
+# .github/workflows/main.yaml
+
+name: Grab and Show Package Version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Demonstrate retrieving package version for App Engine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get package version
+        id: getVersion
+        run: echo "::set-output name=version::$(jq '.version' ./projects/stories/package.json)"
+
+      - name: Show package version (for App Engine)
+        run: 'echo ${{ steps.getVersion.outputs.version }}'
