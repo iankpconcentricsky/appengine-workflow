@@ -1,0 +1,18 @@
+{
+  "name": "kubeapp-comps-library",
+  "version": "0.0.34",
+  "description": "Kubeapp Components Library",
+  "license": "ISC",
+  "scripts": {
+    "docs:serve": "compodoc -p tsconfig.doc.json -s",
+    "versionlocal": "npm config get process.env.version"
+  },
+  "peerDependencies": {
+    "@angular/common": "^13.0.0",
+    "@angular/core": "^13.0.0",
+    "ngx-bootstrap": "^8.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "name": "kubeapp-comps",
+  "version": "1.0.0",
+  "description": "Kubeapp Components",
+  "main": "index.js",
+  "license": "ISC",
+  "files": [
+    "projects/stories/**/*.*"
+  ],
+  "scripts": {
+    "ng": "ng",
+    "start": "PORT=6006 npm run docs:json && start-storybook -p 6006",
+    "watch": "ng build --watch --configuration development",
+    "pack": "npm run sass && ng build && cp -R node_modules/bootstrap/dist/css/bootstrap.css dist/stories/src",
+    "publish": "npm run sass && ng build && cd dist/stories && npm publish",
+    "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
+    "docs:serve": "compodoc -p tsconfig.doc.json -s",
+    "storybook": "npm run docs:json && start-storybook -p 6006",
+    "build-storybook": "npm run docs:json && build-storybook",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
+    "e2e": "ng e2e",
+    "sass": "sass projects/stories/src/scss/styles.scss projects/stories/src/styles.css",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "loki": "loki update",
+    "loki:report": "cd storybook-static/loki && reg-cli ./current/ ./reference/ ./reg-diff/ -R ./report.html && cp -r difference/ reg-diff && open report.html",
+    "loki:ci": "loki --reactUri file:./storybook-static",
+    "all": "concurrently  \"npm run storybook\" \"npm run test:watch\" \"npm run cypress:run\"",
+    "tests": "concurrently \"npm run test\" \"npm run cypress:run\" \"npm run loki\"",
+    "add-stories": "bash boilerplate/stories-file-generator.sh ",
+    "versionlocal": "cd projects/stories && npm config get process.env.version",
+    "lint:sandbox": "npx eslint --ext .js,.jsx,.ts,.tsx projects/sandbox",
+    "lint:stories": "npx eslint --ext .js,.jsx,.ts,.tsx projects/stories",
+    "lint:all": "npx eslint --ext .js,.jsx,.ts,.tsx .",
+    "lint": "ng lint"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "collectCoverage": true,
+    "coverageDirectory": "projects/stories/assets/unit-test-coverage",
+    "collectCoverageFrom": [
+      "<rootDir>/projects/stories/**/*.component.ts",
+      "<rootDir>/projects/stories/**/*.directive.ts",
+      "<rootDir>/projects/stories/**/*.pipe.ts",
+      "<rootDir>/projects/stories/**/*.service.ts",
+      "<rootDir>/projects/stories/**/*.decorator.ts",
+      "!<rootDir>/projects/stories/**/*data.ts",
+      "!<rootDir>/projects/stories/src/lib/readme/*.*",
+      "!<rootDir>/projects/stories/**/*.stories.ts",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/projects/setup-jest.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/cypress/",
+      "<rootDir>/projects/stories/src/lib/jest-spectator-host.spec.ts"
+    ]
+  },
+  "loki": {
+    "configurations": {
+      "chrome.laptop": {
+        "target": "chrome.app",
+        "width": 1366,
+        "height": 768,
+        "deviceScaleFactor": 1,
+        "mobile": false
+      },
+      "chrome.iphone7": {
+        "target": "chrome.app",
+        "preset": "iPhone 7"
+      }
+    }
+  },
+  "dependencies": {
+    "@angular-devkit/build-angular": "~13.0.3",
+    "@angular/animations": "~13.0.0",
+    "@angular/cli": "~13.0.3",
+    "@angular/common": "~13.0.0",
+    "@angular/compiler": "~13.0.0",
+    "@angular/compiler-cli": "~13.0.0",
+    "@angular/core": "~13.0.0",
+    "@angular/elements": "^13.0.2",
+    "@angular/forms": "~13.0.0",
+    "@angular/platform-browser": "~13.0.0",
+    "@angular/platform-browser-dynamic": "~13.0.0",
+    "@angular/router": "~13.0.0",
+    "@compodoc/compodoc": "^1.1.16",
+    "@cypress/schematic": "^1.6.0",
+    "@storybook/addon-a11y": "^6.5.0-alpha.45",
+    "@storybook/addon-actions": "^6.5.0-alpha.45",
+    "@storybook/addon-controls": "^6.5.0-alpha.45",
+    "@storybook/addon-docs": "^6.5.0-alpha.45",
+    "@storybook/addon-essentials": "^6.5.0-alpha.45",
+    "@storybook/addon-jest": "^6.5.0-alpha.45",
+    "@storybook/addon-links": "^6.5.0-alpha.45",
+    "@storybook/angular": "^6.5.0-alpha.45",
+    "@storybook/builder-webpack5": "^6.5.0-alpha.45",
+    "@storybook/manager-webpack5": "^6.5.0-alpha.45",
+    "@storybook/theming": "^6.5.0-alpha.45",
+    "@types/jest": "^27.0.3",
+    "@types/jest-axe": "^3.5.3",
+    "@types/node": "^12.11.1",
+    "@webcomponents/custom-elements": "^1.5.0",
+    "axe-core": "^4.3.5",
+    "babel-loader": "^8.2.3",
+    "bootstrap": "^5.1.3",
+    "concurrently": "^6.4.0",
+    "cypress": "^9.1.1",
+    "cypress-axe": "^0.13.0",
+    "jest": "^27.4.3",
+    "jest-axe": "^5.0.1",
+    "jest-preset-angular": "^11.0.1",
+    "karma-coverage": "~2.0.3",
+    "loki": "^0.28.1",
+    "ng-packagr": "^13.0.0",
+    "normalize.css": "^8.0.1",
+    "reg-cli": "^0.17.4",
+    "rxjs": "latest",
+    "storybook-addon-designs": "^6.2.0",
+    "storybook-addon-pseudo-states": "^1.0.0",
+    "storybook-dark-mode": "^1.0.8",
+    "tslib": "^2.3.0",
+    "typescript": "~4.4.3",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~13.0.3",
+    "@angular-eslint/builder": "13.1.0",
+    "@angular-eslint/eslint-plugin": "13.1.0",
+    "@angular-eslint/eslint-plugin-template": "13.1.0",
+    "@angular-eslint/schematics": "13.1.0",
+    "@angular-eslint/template-parser": "13.1.0",
+    "@angular/compiler-cli": "~13.0.0",
+    "@ngneat/spectator": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "5.11.0",
+    "eslint": "^8.2.0",
+    "jest-mock-extended": "^2.0.4",
+    "ngx-bootstrap": "^8.0.0",
+    "typescript": "~4.4.3"
+  }
+}
