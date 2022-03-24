@@ -12,7 +12,7 @@ import { ReadmeComponent } from './readme/readme.component';
         CommonModule,
     ],
     // services
-    providers: [NavigationService],
+    providers: [],
     exports: [
       ReadmeComponent
     ]
