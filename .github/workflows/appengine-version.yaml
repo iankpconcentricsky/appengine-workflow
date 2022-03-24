@@ -1,0 +1,26 @@
+# .github/workflows/feature/version-in-workflow-for-appengine.yaml
+
+name: Grab and Show Package Version
+
+on:
+  push:
+    branches:
+      - feature/version-in-workflow-for-appengine
+
+jobs:
+  deploy:
+    name: Demonstrate retrieving package version for App Engine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get style library version
+        id: getVersion
+        run: |
+          echo "::set-output name=library::$(jq '.version' ./projects/stories/package.json)"
+          echo "::set-output name=project::$(jq '.version' ./package.json)"
+
+      - name: Show style library version (for App Engine)
+        run: |
+          echo Library version: ${{ steps.getVersion.outputs.library }}
+          echo Project version: ${{ steps.getVersion.outputs.project }}

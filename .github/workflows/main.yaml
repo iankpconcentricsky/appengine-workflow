@@ -1,0 +1,67 @@
+# .github/workflows/main.yaml
+
+name: Kubeapp UI Components - Production
+on:
+  release:
+    branches:
+      - main
+    types: [published]
+
+jobs:
+  deploy:
+#    if: github.event.pull_request.merged == true
+    name: Create package and deploy to Design Review environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Source Node.js 16 image
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install node modules
+        run: npm ci
+
+      - name: Jest unit testing
+        run: npm run test:generate-output
+
+      - name: Build static storybook content
+        run: npm run build-storybook
+
+      #- name: Cache old regression results
+      #  run: scp -r user@iposs-appengine-review-dot-concentric-sky-development.uw.r.appspot.com:storybook-static ./storybook-static/loki
+
+      #- name: Run regression tests
+      #  run: npm run loki:ci
+
+      - name: Service account authentication to GCP
+        id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.CSKY_GCP_PRODUCTION }}'
+
+      - name: Deploy iposs-appengine to GAE service - PRODUCTION
+        id: 'deploy'
+        uses: google-github-actions/deploy-appengine@main
+        with:
+          deliverables: iposs-appengine-production.yaml
+
+      - name: 'show output'
+        run: 'echo ${{ steps.deploy.outputs.url }}'
+
+  publish-gpr:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci
+      - run: npm run publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.UI_COMPONENTS_LIBRARY_TOKEN}}
