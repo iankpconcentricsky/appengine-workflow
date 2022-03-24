@@ -1,0 +1,21 @@
+unit-test-coverage
+projects/stories/assets/unit-test-coverage
+projects/unit-test-coverage
+/cypress/videos/*
+storybook-static
+documentation.json
+documentation/
+node_modules
+.gcloudignore
+
+# Angular
+.angular
+dist
+
+# IntelliJ
+.idea
+*.iml
+
+# Compiled css
+*.css
+*.css.map
