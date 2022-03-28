@@ -7,7 +7,7 @@
 # node 16 compatible
 runtime: nodejs16
 
-service: iposs-appengine-prod
+service: iposs-appengine-production
 
 env_variables:
 #  PORT: 6006
