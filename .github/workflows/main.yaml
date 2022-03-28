@@ -47,6 +47,11 @@ jobs:
           echo "::set-output name=library::$(jq '.version' ./projects/stories/package.json)"
           echo "::set-output name=project::$(jq '.version' ./package.json)"
 
+      - name: Show style library version (for App Engine)
+        run: |
+          echo Library version: ${{ steps.getVersion.outputs.library }}
+          echo Project version: ${{ steps.getVersion.outputs.project }}
+
       - name: Deploy iposs-appengine to GAE service - PRODUCTION
         id: 'deploy'
         uses: google-github-actions/deploy-appengine@main
