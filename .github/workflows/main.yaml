@@ -52,7 +52,7 @@ jobs:
         uses: google-github-actions/deploy-appengine@main
         with:
           deliverables: iposs-appengine-production.yaml
-          version: ${{ steps.getVersion.outputs.library }}
+          version: ${{ steps.getVersion.outputs.project }}
 
       - name: 'show output'
         run: 'echo ${{ steps.deploy.outputs.url }}'
