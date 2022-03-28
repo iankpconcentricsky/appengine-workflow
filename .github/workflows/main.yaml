@@ -41,11 +41,18 @@ jobs:
         with:
           credentials_json: '${{ secrets.CSKY_GCP_PRODUCTION }}'
 
+      - name: Get style library version
+        id: getVersion
+        run: |
+          echo "::set-output name=library::$(jq '.version' ./projects/stories/package.json)"
+          echo "::set-output name=project::$(jq '.version' ./package.json)"
+
       - name: Deploy iposs-appengine to GAE service - PRODUCTION
         id: 'deploy'
         uses: google-github-actions/deploy-appengine@main
         with:
           deliverables: iposs-appengine-production.yaml
+          version: ${{ steps.getVersion.outputs.library }}
 
       - name: 'show output'
         run: 'echo ${{ steps.deploy.outputs.url }}'
