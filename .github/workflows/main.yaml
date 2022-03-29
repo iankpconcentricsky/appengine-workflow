@@ -80,5 +80,6 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run publish
+        continue-on-error: true
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
