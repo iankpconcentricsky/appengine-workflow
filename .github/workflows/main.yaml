@@ -49,15 +49,20 @@ jobs:
 
       - name: Show style library version (for App Engine)
         run: |
-          echo Library version: ${{ steps.getVersion.outputs.library }}
           echo Project version: ${{ steps.getVersion.outputs.project }}
+          echo Library version: ${{ steps.getVersion.outputs.library }}
+
+      - name: Set AppEngine version string
+        id: appEngineVersion
+        run: |
+          echo "::set-output name=version::$(git rev-parse --short ${{ github.sha }})-$(echo ${{ steps.getVersion.outputs.project }} | sed 's/\./-/g')"
 
       - name: Deploy iposs-appengine to GAE service - PRODUCTION
         id: 'deploy'
         uses: google-github-actions/deploy-appengine@main
         with:
           deliverables: iposs-appengine-production.yaml
-          version: ${{ steps.getVersion.outputs.project }}
+          version: ${{ steps.appEngineVersion.outputs.version }}
 
       - name: 'show output'
         run: 'echo ${{ steps.deploy.outputs.url }}'
